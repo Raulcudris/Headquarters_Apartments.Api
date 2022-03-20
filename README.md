@@ -1,0 +1,2 @@
+# Headquarters_Apartments.Api
+Para el Fondo XYZ el bienestar de los asociados y su grupo familiar es uno de sus objetivos fundamentales.  A través de los años el Fondo ha adquirido, construido o adaptado, tanto Sedes recreativas como apartamentos propios en las diferentes regionales, que les permitan a los usuarios el uso de instalaciones adecuadas para las prácticas deportivas, el turismo y el ocio recreativo.  Actualmente tiene en su página web para información de sus asociados la ubicación y descripción de cada uno de estos sitios.
