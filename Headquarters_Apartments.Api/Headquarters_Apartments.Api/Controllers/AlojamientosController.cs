@@ -81,12 +81,12 @@ namespace Headquarters_Apartments.Api.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Alojamiento>> PostAlojamientos(Alojamiento alojamiento)
+        public async Task<ActionResult<Alojamiento>>PostAlojamientos(Alojamiento alojamiento)
         {
             _context.Alojamientos.Add(alojamiento);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetEstado_Habitacion", new { id = alojamiento.Id_Alo }, alojamiento);
+            return CreatedAtAction("GetAlojamientos", new { id = alojamiento.Id_Alo }, alojamiento);
         }
 
         // DELETE: api/Alojamientos/5
