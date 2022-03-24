@@ -12,48 +12,48 @@ namespace Headquarters_Apartments.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class Tipo_AlojamientoController : ControllerBase
     {
         private readonly AppDbContext _context;
-
-        public UsersController(AppDbContext context)
+        public Tipo_AlojamientoController(AppDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Users
+        // GET: api/Tipo_Alojamiento
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<Tipos_Alojamientos>>> GetTipo_Alojamiento()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Tipos_Alojamientos.ToListAsync();
         }
 
-        // GET: api/users/5
+        // GET: api/Tipo_Alojamiento/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUsers(int id)
+        public async Task<ActionResult<Tipos_Alojamientos>> GetTipo_Alojamiento(string id)
         {
-            var Users = await _context.Users.FindAsync(id);
+            var Alojamiento = await _context.Tipos_Alojamientos.FindAsync(id);
 
-            if (Users == null)
+            if (Alojamiento == null)
             {
                 return NotFound();
             }
 
-            return Users;
+            return Alojamiento;
         }
 
-        // PUT: api/Usuarios/5
+
+        // PUT: api/Tipo_Alojamiento/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUsers(int id, User users)
+        public async Task<IActionResult> PutTipo_Alojamiento(string id, Tipos_Alojamientos tipos_alojamientos)
         {
-            if (id != users.Id)
+            if (id != tipos_alojamientos.Id_TA)
             {
                 return BadRequest();
             }
 
-            _context.Entry(users).State = EntityState.Modified;
+            _context.Entry(tipos_alojamientos).State = EntityState.Modified;
 
             try
             {
@@ -73,50 +73,37 @@ namespace Headquarters_Apartments.Api.Controllers
 
             return NoContent();
         }
+        private bool UsersExists(string id)
+        {
+            return _context.Tipos_Alojamientos.Any(e => e.Id_TA == id);
+        }
 
-        // POST: api/Users
+        // POST: api/Tipo_Alojamiento
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<User>> PostUsers(User users)
+        public async Task<ActionResult<Tipos_Alojamientos>> PostTipo_Alojamiento(Tipos_Alojamientos tipos_Alojamientos)
         {
-            _context.Users.Add(users);
+            _context.Tipos_Alojamientos.Add(tipos_Alojamientos);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUsers", new { id = users.Id }, users);
+            return CreatedAtAction("GetTipo_Alojamientos", new { id = tipos_Alojamientos.Id_TA }, tipos_Alojamientos);
         }
-        // DELETE: api/Users/5
+
+        // DELETE: api/Tipo_Alojamiento/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<User>> DeleteUsers(int id)
+        public async Task<ActionResult<Tipos_Alojamientos>> DeleteTipo_Alojamiento(string id)
         {
-            var users = await _context.Users.FindAsync(id);
-            if (users == null)
+            var Alojamiento = await _context.Tipos_Alojamientos.FindAsync(id);
+            if (Alojamiento == null)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(users);
+            _context.Tipos_Alojamientos.Remove(Alojamiento);
             await _context.SaveChangesAsync();
 
-            return users;
-        }
-
-        [HttpGet("{Number_Document}/{Password}")]
-        public ActionResult<List<User>> GetLogin(string Number_Document, string Password)
-        {
-            var user = _context.Users.Where(user => user.Numero_Documento.Equals(Number_Document) && user.Clave.Equals(Password)).ToList();
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return user;
-        }
-
-        private bool UsersExists(int id)
-        {
-            return _context.Users.Any(e => e.Id == id);
+            return Alojamiento;
         }
 
     }

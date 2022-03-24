@@ -12,48 +12,48 @@ namespace Headquarters_Apartments.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class ReservasController : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public UsersController(AppDbContext context)
+        public ReservasController(AppDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Users
+        // GET: api/Reservas
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<Reserva>>> GetReservas()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Reservas.ToListAsync();
         }
 
-        // GET: api/users/5
+        // GET: api/Reservas/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUsers(int id)
+        public async Task<ActionResult<Reserva>> GetReservas(string id)
         {
-            var Users = await _context.Users.FindAsync(id);
+            var Reservas = await _context.Reservas.FindAsync(id);
 
-            if (Users == null)
+            if (Reservas == null)
             {
                 return NotFound();
             }
 
-            return Users;
+            return Reservas;
         }
 
-        // PUT: api/Usuarios/5
+        // PUT: api/Reservas/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUsers(int id, User users)
+        public async Task<IActionResult> PutReservas(string id, Reserva Reservas)
         {
-            if (id != users.Id)
+            if (id != Reservas.Id_Reserva)
             {
                 return BadRequest();
             }
 
-            _context.Entry(users).State = EntityState.Modified;
+            _context.Entry(Reservas).State = EntityState.Modified;
 
             try
             {
@@ -73,51 +73,41 @@ namespace Headquarters_Apartments.Api.Controllers
 
             return NoContent();
         }
+        private bool UsersExists(string id)
+        {
+            return _context.Reservas.Any(e => e.Id_Reserva == id);
+        }
 
-        // POST: api/Users
+        // POST: api/Reservas
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<User>> PostUsers(User users)
+        public async Task<ActionResult<Reserva>> PostReservas(Reserva Reservas)
         {
-            _context.Users.Add(users);
+            _context.Reservas.Add(Reservas);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUsers", new { id = users.Id }, users);
+            return CreatedAtAction("GetReservas", new { id = Reservas.Id_Reserva }, Reservas);
         }
-        // DELETE: api/Users/5
+
+        // DELETE: api/Reservas/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<User>> DeleteUsers(int id)
+        public async Task<ActionResult<Reserva>> DeleteReservas(string id)
         {
-            var users = await _context.Users.FindAsync(id);
-            if (users == null)
+            var reservas = await _context.Reservas.FindAsync(id);
+            if (reservas == null)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(users);
+            _context.Reservas.Remove(reservas);
             await _context.SaveChangesAsync();
 
-            return users;
+            return reservas;
         }
 
-        [HttpGet("{Number_Document}/{Password}")]
-        public ActionResult<List<User>> GetLogin(string Number_Document, string Password)
-        {
-            var user = _context.Users.Where(user => user.Numero_Documento.Equals(Number_Document) && user.Clave.Equals(Password)).ToList();
 
-            if (user == null)
-            {
-                return NotFound();
-            }
 
-            return user;
-        }
-
-        private bool UsersExists(int id)
-        {
-            return _context.Users.Any(e => e.Id == id);
-        }
 
     }
 }

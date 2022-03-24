@@ -12,48 +12,46 @@ namespace Headquarters_Apartments.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ReservesController : ControllerBase
+    public class ServiciosController : ControllerBase
     {
         private readonly AppDbContext _context;
-
-        public ReservesController(AppDbContext context)
+        public ServiciosController(AppDbContext context)
         {
             _context = context;
         }
-
-        // GET: api/Reserves
+        // GET: api/Servicios
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Reserve>>> GetReserves()
+        public async Task<ActionResult<IEnumerable<Servicios>>> GetServicios()
         {
-            return await _context.Reserves.ToListAsync();
+            return await _context.Servicios.ToListAsync();
         }
 
-        // GET: api/Reserves/5
+        // GET: api/Servicios/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Reserve>> GetReserve(int id)
+        public async Task<ActionResult<Servicios>> GetServicios(string id)
         {
-            var reserves = await _context.Reserves.FindAsync(id);
+            var Servicios = await _context.Servicios.FindAsync(id);
 
-            if (reserves == null)
+            if (Servicios == null)
             {
                 return NotFound();
             }
 
-            return reserves;
+            return Servicios;
         }
 
-        // PUT: api/Reserves/5
+        // PUT: api/Servicios/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutReserves(int id, Reserve reserves)
+        public async Task<IActionResult> PutServicios(string id, Servicios servicios)
         {
-            if (id != reserves.Id_Reserve)
+            if (id != servicios.Id_OTS)
             {
                 return BadRequest();
             }
 
-            _context.Entry(reserves).State = EntityState.Modified;
+            _context.Entry(servicios).State = EntityState.Modified;
 
             try
             {
@@ -61,7 +59,7 @@ namespace Headquarters_Apartments.Api.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ReserveExists(id))
+                if (!UsersExists(id))
                 {
                     return NotFound();
                 }
@@ -73,39 +71,40 @@ namespace Headquarters_Apartments.Api.Controllers
 
             return NoContent();
         }
+        private bool UsersExists(string id)
+        {
+            return _context.Servicios.Any(e => e.Id_OTS == id);
+        }
 
-        // POST: api/Reserves
+
+        // POST: api/Servicios
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Reserve>> PostReserve(Reserve reserves)
+        public async Task<ActionResult<Servicios>> PostServicios(Servicios servicios)
         {
-            _context.Reserves.Add(reserves);
+            _context.Servicios.Add(servicios);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetReserves", new { id = reserves.Id_Reserve }, reserves);
+            return CreatedAtAction("GetServicios", new { id = servicios.Id_OTS }, servicios);
         }
 
-        // DELETE: api/Reserve/5
+        // DELETE: api/Servicios/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Reserve>> DeleteReserve(int id)
+        public async Task<ActionResult<Servicios>> DeleteServicios(string id)
         {
-            var reserves = await _context.Reserves.FindAsync(id);
-            if (reserves == null)
+            var servicios = await _context.Servicios.FindAsync(id);
+            if (servicios == null)
             {
                 return NotFound();
             }
 
-            _context.Reserves.Remove(reserves);
+            _context.Servicios.Remove(servicios);
             await _context.SaveChangesAsync();
 
-            return reserves;
+            return servicios;
         }
 
-        private bool ReserveExists(int id)
-        {
-            return _context.Reserves.Any(e => e.Id_Reserve == id);
-        }
 
     }
 }

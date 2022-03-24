@@ -12,48 +12,49 @@ namespace Headquarters_Apartments.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class SedesController : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public UsersController(AppDbContext context)
+        public SedesController(AppDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Users
+        // GET: api/Sedes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<Sede>>> GetSedes()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Sedes.ToListAsync();
         }
 
-        // GET: api/users/5
+        // GET: api/Sedes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUsers(int id)
+        public async Task<ActionResult<Sede>> GetSede(string id)
         {
-            var Users = await _context.Users.FindAsync(id);
+            var Sede = await _context.Sedes.FindAsync(id);
 
-            if (Users == null)
+            if (Sede == null)
             {
                 return NotFound();
             }
 
-            return Users;
+            return Sede;
         }
 
-        // PUT: api/Usuarios/5
+
+        // PUT: api/Sedes/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUsers(int id, User users)
+        public async Task<IActionResult> PutSede(string id, Sede sede)
         {
-            if (id != users.Id)
+            if (id != sede.Id_Sede)
             {
                 return BadRequest();
             }
 
-            _context.Entry(users).State = EntityState.Modified;
+            _context.Entry(sede).State = EntityState.Modified;
 
             try
             {
@@ -73,50 +74,37 @@ namespace Headquarters_Apartments.Api.Controllers
 
             return NoContent();
         }
+        private bool UsersExists(string id)
+        {
+            return _context.Sedes.Any(e => e.Id_Sede == id);
+        }
 
-        // POST: api/Users
+        // POST: api/Sedes
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<User>> PostUsers(User users)
+        public async Task<ActionResult<Sede>> PostSede(Sede sede)
         {
-            _context.Users.Add(users);
+            _context.Sedes.Add(sede);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUsers", new { id = users.Id }, users);
+            return CreatedAtAction("GetSedes", new { id = sede.Id_Sede }, sede);
         }
-        // DELETE: api/Users/5
+
+        // DELETE: api/Sedes/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<User>> DeleteUsers(int id)
+        public async Task<ActionResult<Sede>> DeleteSede(string id)
         {
-            var users = await _context.Users.FindAsync(id);
-            if (users == null)
+            var sede = await _context.Sedes.FindAsync(id);
+            if (sede == null)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(users);
+            _context.Sedes.Remove(sede);
             await _context.SaveChangesAsync();
 
-            return users;
-        }
-
-        [HttpGet("{Number_Document}/{Password}")]
-        public ActionResult<List<User>> GetLogin(string Number_Document, string Password)
-        {
-            var user = _context.Users.Where(user => user.Numero_Documento.Equals(Number_Document) && user.Clave.Equals(Password)).ToList();
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return user;
-        }
-
-        private bool UsersExists(int id)
-        {
-            return _context.Users.Any(e => e.Id == id);
+            return sede;
         }
 
     }
